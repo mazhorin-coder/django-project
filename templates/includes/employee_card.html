@@ -1,0 +1,12 @@
+<div class="employee-card" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+    <a href="{% url 'employees:detail' employee.pk %}" style="text-decoration: none; color: inherit; display: block;">
+        <h3>{{ employee.first_name }} {{ employee.last_name }}</h3>
+        <p><strong>Навыки:</strong>
+            {% for skill in employee.skills.all %}
+                {{ skill.name }}{% if not forloop.last %}, {% endif %}
+            {% empty %}
+                Навыки не указаны
+            {% endfor %}
+        </p>
+    </a>
+</div>

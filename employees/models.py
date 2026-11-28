@@ -1,3 +1,5 @@
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -65,3 +67,21 @@ class EmployeeSkill(models.Model):
 
     def __str__(self):
         return f"{self.employee} - {self.skill} ({self.level}/10)"
+
+class EmployeeImage(models.Model):
+    employee = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name="Сотрудник"
+    )
+    image = models.ImageField("Изображение", upload_to="employees/")
+    order = models.PositiveIntegerField("Порядковый номер", default=1, validators=[MinValueValidator(1)])
+
+    class Meta:
+        verbose_name = "Изображение сотрудника"
+        verbose_name_plural = "Изображения сотрудников"
+        ordering = ["order"]
+
+    def __str__(self):
+        return f"Фото {self.employee} (№{self.order})"
